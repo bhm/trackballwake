@@ -1,0 +1,19 @@
+#!/system//bin/sh
+# Original script written by WinSuk from XDA
+# Trackball script was written originally for CM9 and CM10 roms for HTC Liberty device
+# Changed for clearance of the code
+# Off by default
+TRACKBALL_FLAG="1"
+TRACKBALL_STATE=`cat ./curcial-oj.idc | grep device.`
+WORKING_DIR="/system/usr/idc/"
+cd $WORKING_DIR
+TRACKBALL_IS_OFF="device.internal = 1"
+if [ "TRACKBALL_STATE" = "$TRACKBALL_IS_OFF" ]; then
+    echo "Trackball awake will be ENABLED"
+    $TRACKBALL_FLAG = "0"
+else 
+    echo "Trackball awake will be DISABLED"
+    $TRACKBALL_FLAG = "1"
+fi
+sudo -c "mount -o rw, remount /system /system && cd $WORKING_DIR && sed \"s/device.internal = .*/device.internal = $TRACKBALL_FLAG/g\" curcial-oj.idc > temp && mv temp curcial-oj.idc && chmod 0644 ./curcial-oj.idc"
+exit 0
