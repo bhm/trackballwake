@@ -11,3 +11,10 @@
 The script enables and disables the trackball wake function.
 Original credit goes to WinSuk from xda forums. He created the script for HTC Liberty devices running CyanogenMod 9 and 10.
 This was rewritten and accomodates permissions.
+
+##trackballwake2
+Rewritten script that modifies proper file. Checks for S-ON.
+##update-trackballwake-script-signed.zip
+Flashes new script to be run. Use only when you have S-OF.
+##update-trackballwake-signed.zip
+Flashes the new file that enbles wake by trackball
