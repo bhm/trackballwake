@@ -7,6 +7,12 @@ TRACKBALL_FLAG="1"
 TRACKBALL_STATE=`cat ./curcial-oj.idc | grep device.`
 WORKING_DIR="/system/usr/idc/"
 cd $WORKING_DIR
+# Test now
+touch a > null
+if [ "$?" = "1"]; then
+    echo "You don't seem to have S-Off\n Cannot write to /system."
+    exit 1
+fi
 TRACKBALL_IS_OFF="device.internal = 1"
 if [ "TRACKBALL_STATE" = "$TRACKBALL_IS_OFF" ]; then
     echo "Trackball awake will be ENABLED"
