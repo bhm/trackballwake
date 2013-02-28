@@ -1,25 +1,29 @@
 #!/system/bin/sh
 # Original script written by WinSuk from XDA
-# Trackball script was written originally for CM9 and CM10 roms for HTC Liberty device
+# Trackball script was written originally for CM9 and CM10 ROMs made for HTC Liberty device
 # Changed for clearance of the code
-# Off by default
+# Trackball wake is Off by default in many ROMS
+# Touch {dir} with S-ON will return error code 255
 TRACKBALL_FLAG="1"
-TRACKBALL_STATE=`cat ./curcial-oj.idc | grep device.`
+TRACKBALL_STATE=`cat /system/usr/idc/curcial-oj.idc | grep device.`
 WORKING_DIR="/system/usr/idc/"
+TRACKBALL_IS_OFF="device.internal = 1"
 cd $WORKING_DIR
-# Test now
-touch a > null
-if [ "$?" = "1"]; then
+touch $WORKING_DIR/_test
+TOUCH_TEST=`echo $?`
+if [ "$TOUCH_TEST" = "255" ]; then
     echo "You don't seem to have S-Off\n Cannot write to /system."
     exit 1
+elif [ "$TOUCH_TEST" = "0" ]; then
+    echo "Should be able to write"
+    rm $WORKING_DIR/_test
 fi
-TRACKBALL_IS_OFF="device.internal = 1"
 if [ "TRACKBALL_STATE" = "$TRACKBALL_IS_OFF" ]; then
     echo "Trackball awake will be ENABLED"
-    $TRACKBALL_FLAG = "0"
+    TRACKBALL_FLAG="0"
 else 
     echo "Trackball awake will be DISABLED"
-    $TRACKBALL_FLAG = "1"
+    TRACKBALL_FLAG="1"
 fi
-sudo -c "mount -o rw, remount /system /system && cd $WORKING_DIR && sed \"s/device.internal = .*/device.internal = $TRACKBALL_FLAG/g\" curcial-oj.idc > temp && mv temp curcial-oj.idc && chmod 0644 ./curcial-oj.idc"
+su -c "mount -o rw,remount /system /system && cd $WORKING_DIR && sed \"s/device.internal = .*/device.internal = $TRACKBALL_FLAG/g\" curcial-oj.idc > temp && mv temp curcial-oj.idc && chmod 0644 ./curcial-oj.idc"
 exit 0
